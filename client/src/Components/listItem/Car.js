@@ -1,49 +1,35 @@
-import { useState } from 'react'
-
-import { EditOutlined } from '@ant-design/icons'
-import { Card } from 'antd'
-import RemovePerson from "../buttons/RemovePerson";
-import UpdateCar from "../Forms/UpdatePerson";
-import RemoveCar from "../buttons/RemoveCar";
+import {useQuery} from '@apollo/client'
+import {List} from 'antd'
+import {GET_CARS} from '../../queries'
+import Car from '../listItem/Car'
 
 const getStyles = () => ({
-    card: {
-        width: '500px'
+    list: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 })
-const Car = props => {
-    const { id, year, make, model, price, personId } = props
+
+const Cars = ({checkID}) => {
     const styles = getStyles()
 
-    const [editMode, setEditMode] = useState(false)
-
-    const handleButtonClick = () => setEditMode(!editMode)
+    const {loading, error, data} = useQuery(GET_CARS)
+    if (loading) return 'Loading...'
+    if (error) return `Error! ${error.message}`
 
     return (
-        <>
-            {editMode ? (
-                <UpdateCar
-                    id={id}
-                    year={year}
-                    make={make}
-                    model={model}
-                    price={price}
-                    personId={personId}
-                    onButtonClick={handleButtonClick}
-                />
-            ) : (
-                <Card
-                    style={styles.card}
-                    actions={[
-                        <EditOutlined key='edit' onClick={handleButtonClick} />,
-                        <RemoveCar id={id} />
-                    ]}
-                >
-                    {year} {make} {model} {price} {personId}
-                </Card>
-            )}
-        </>
+        <List grid={{gutter: 20, column: 1}} style={styles.list}>
+            {data.cars.map(({id, year, make, model, price, personId}) => {
+                if (checkID === personId) {
+                    return <List.Item key={id}>
+                        <Car id={id} year={year} make={make} model={model} price={price} personId={personId}/>
+                    </List.Item>
+                } else {
+                    return null
+                }
+            })}
+        </List>
     )
 }
 
-export default Car
+export default Cars

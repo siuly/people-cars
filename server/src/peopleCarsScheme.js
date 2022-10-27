@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-express";
-import {find} from "lodash";
+import {find, remove} from "lodash";
 
 
 const people_data = [
@@ -122,12 +122,12 @@ const typeDefs = gql`
     cars: [Cars]
     personWCars(id: String!): PersonWCars
   }
-  
+
   type Mutation {
     addPerson(id: String!, firstName: String!, lastName: String!): People
-    addCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Cars
+    addCar(id: String!, year: Int!, make: String!, model: String!, price: Float!, personId: String!): Cars
     updatePerson(id: String!, firstName: String!, lastName: String!):People
-    updateCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Cars
+    updateCar(id: String!, year: Int!, make: String!, model: String!, price: Float!, personId: String!): Cars
     removePerson(id: String!): People
     removeCar(id: String!): Cars
   }
@@ -151,8 +151,8 @@ const resolvers = {
     }
   },
 
-    Mutation: {
-      addPerson: (root, args) => {
+  Mutation: {
+    addPerson: (root, args) => {
       const newPeople = {
         id: args.id,
         firstName: args.firstName,
@@ -163,22 +163,22 @@ const resolvers = {
 
       return newPeople;
     },
-      addCar: (root, args) => {
-        const newCar = {
-          id: args.id,
-          year: args.year,
-          make: args.make,
-          model: args.model,
-          price: args.price,
-          personId: args.personId
-        }
+    addCar: (root, args) => {
+      const newCar = {
+        id: args.id,
+        year: args.year,
+        make: args.make,
+        model: args.model,
+        price: args.price,
+        personId: args.personId
+      }
 
-        cars_data.push(newCar);
+      cars_data.push(newCar);
 
-        return newCar;
-      },
-      updatePerson: (root, args) =>{
-        const people = find(people_data, {id: args.id})
+      return newCar;
+    },
+    updatePerson: (root, args) =>{
+      const people = find(people_data, {id: args.id})
 
       if (!people){
         throw new Error(`Couldn't find person with id ${args.id}`)
@@ -187,48 +187,48 @@ const resolvers = {
       people.firstName = args.firstName
       people.lastName = args.lastName
 
-        return people
+      return people
 
-      },
-      updateCar: (root, args) =>{
-        const cars = find(cars_data, {id: args.id})
+    },
+    updateCar: (root, args) =>{
+      const cars = find(cars_data, {id: args.id})
 
-        if (!cars){
-          throw new Error(`Couldn't find car with id ${args.id}`)
-        }
-            cars.id = args.id
-            cars.year = args.year
-            cars.make = args.make
-            cars.model = args.model
-            cars.price = args.price
-            cars.personId = args.personId
-
-        return cars
-
-      },
-      removePerson: (root, args) =>{
-        const removedPerson = find(people_data, {id: args.id})
-
-        if (!removedPerson){
-          throw new Error(`Couldn't find person with id ${args.id}`)
-        }
-
-        remove(people_data, p =>{
-          return p.id === removedPerson.id
-        })
-      },
-      removeCar: (root, args) =>{
-        const removedCar = find(cars_data, {id: args.id})
-
-        if (!removedCar){
-          throw new Error(`Couldn't find car with id ${args.id}`)
-        }
-
-        remove(cars_data, p =>{
-          return p.id === removedCar.id
-        })
+      if (!cars){
+        throw new Error(`Couldn't find car with id ${args.id}`)
       }
+      cars.id = args.id
+      cars.year = args.year
+      cars.make = args.make
+      cars.model = args.model
+      cars.price = args.price
+      cars.personId = args.personId
+
+      return cars
+
+    },
+    removePerson: (root, args) =>{
+      const removedPerson = find(people_data, {id: args.id})
+
+      if (!removedPerson){
+        throw new Error(`Couldn't find person with id ${args.id}`)
+      }
+
+      remove(people_data, p =>{
+        return p.id === removedPerson.id
+      })
+    },
+    removeCar: (root, args) =>{
+      const removedCar = find(cars_data, {id: args.id})
+
+      if (!removedCar){
+        throw new Error(`Couldn't find car with id ${args.id}`)
+      }
+
+      remove(cars_data, p =>{
+        return p.id === removedCar.id
+      })
     }
+  }
 }
 
 export {typeDefs, resolvers}

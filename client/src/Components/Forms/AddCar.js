@@ -10,12 +10,11 @@ const AddCar = () => {
     const [people, setPeople] = useState([])
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
-    const { info } = useQuery(GET_PEOPLE)
+    const { data } = useQuery(GET_PEOPLE);
 
     useEffect(() => {
         forceUpdate({})
     }, [])
-
 
 
     const onFinish = values => {
@@ -23,15 +22,15 @@ const AddCar = () => {
 
         addCar({
             variables: {
-                id:uuidv4(),
+                id,
                 year,
                 make,
                 model,
                 price,
                 personId: people,
             },
-            update: (cache, { data: { addCar } }) => {
-                const data = cache.readQuery({ query: GET_CARS })
+            update: (cache, { data:  addCar  }) => {
+                const dataNew = cache.readQuery({ query: GET_CARS })
                 cache.writeQuery({
                     query: GET_CARS,
                     data: {
@@ -41,6 +40,8 @@ const AddCar = () => {
                 })
             }
         })
+        form.resetFields();
+        setId(uuidv4());
     }
 
     return (
@@ -61,6 +62,7 @@ const AddCar = () => {
                 <Form.Item
                     label={'Year:'}
                     name='year'
+                    min={1900}
                     rules={[{ required: true, message: 'Please input the year!' }]}
                 >
                     <Input placeholder='Year' />
@@ -80,6 +82,7 @@ const AddCar = () => {
                     <Input placeholder='Make' />
                 </Form.Item>
                 <Form.Item
+                    min={0}
                     label={'Price:'}
                     name='Price'
                     type={'currency'}
@@ -93,12 +96,11 @@ const AddCar = () => {
                     rules={[{ required: true, message: 'Please select a person!' }]}
                 >
                     <Select
-                        ShowSearch
                         placeholder={'Select a person'}
                         onChange={(id => setPeople(id))}
-                        >
-                        {info?.people?.map(person => (
-                            <Option value={person.id}>{person.firstName} {person.lastName}</Option>
+                    >
+                        {data?.people?.map(person => (
+                            <Option key={person.id} value={person.id}>{person.firstName} {person.lastName}</Option>
                         ))
                         }
                     </Select>

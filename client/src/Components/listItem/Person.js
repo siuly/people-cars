@@ -5,7 +5,7 @@ import { EditOutlined } from '@ant-design/icons'
 import { Card } from 'antd'
 import RemovePerson from "../buttons/RemovePerson";
 import UpdatePerson from "../Forms/UpdatePerson";
-import Car from "./Car";
+import Cars from "../list/Cars";
 
 const getStyles = () => ({
     card: {
@@ -41,7 +41,6 @@ const Person = props => {
 
                     <Car passedId={id}/>
 
-                    {/*<Link to={`/people/${id}`}>LEARN MORE</Link>*/}
                 </Card>
             )}
         </>
