@@ -1,11 +1,11 @@
 import { useState } from 'react'
-
-// import { Link } from 'react-router-dom';
 import { EditOutlined } from '@ant-design/icons'
 import { Card } from 'antd'
 import RemovePerson from "../buttons/RemovePerson";
 import UpdatePerson from "../Forms/UpdatePerson";
 import Cars from "../list/Cars";
+
+import { Link } from 'react-router-dom';
 
 const getStyles = () => ({
     card: {

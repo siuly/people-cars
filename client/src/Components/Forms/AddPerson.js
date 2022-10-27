@@ -6,7 +6,7 @@ import { ADD_PERSON, GET_PEOPLE } from '../../queries'
 
 const AddPerson = () => {
     const [addPerson] = useMutation(ADD_PERSON)
-
+    const [id, setId] = useState(uuidv4())
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
 
@@ -19,7 +19,7 @@ const AddPerson = () => {
 
         addPerson({
             variables: {
-                id:uuidv4(),
+                id,
                 firstName,
                 lastName
             },
@@ -34,6 +34,7 @@ const AddPerson = () => {
                 })
             }
         })
+    setId(uuidv4);
     }
 
     return (

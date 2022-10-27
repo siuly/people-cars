@@ -18,7 +18,12 @@ const AddCar = () => {
 
 
     const onFinish = values => {
-        const { year, make, model, price} = values
+        const {
+            year,
+            make,
+            model,
+            price
+        } = values
 
         addCar({
             variables: {
@@ -65,7 +70,7 @@ const AddCar = () => {
                     min={1900}
                     rules={[{ required: true, message: 'Please input the year!' }]}
                 >
-                    <Input placeholder='Year' />
+                    <InputNumber placeholder='Year' />
                 </Form.Item>
                 <Form.Item
                     label={'Make:'}
@@ -88,7 +93,7 @@ const AddCar = () => {
                     type={'currency'}
                     rules={[{ required: true, message: 'Please input the price!' }]}
                 >
-                    <Input  />
+                    <InputNumber  />
                 </Form.Item>
                 <Form.Item
                     label={'Person:'}
@@ -96,13 +101,13 @@ const AddCar = () => {
                     rules={[{ required: true, message: 'Please select a person!' }]}
                 >
                     <Select
+                        showSearch
                         placeholder={'Select a person'}
                         onChange={(id => setPeople(id))}
                     >
                         {data?.people?.map(person => (
                             <Option key={person.id} value={person.id}>{person.firstName} {person.lastName}</Option>
-                        ))
-                        }
+                        ))}
                     </Select>
 
                 </Form.Item>

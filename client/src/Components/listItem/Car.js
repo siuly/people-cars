@@ -1,35 +1,49 @@
-import {useQuery} from '@apollo/client'
-import {List} from 'antd'
-import {GET_CARS} from '../../queries'
-import Car from '../listItem/Car'
+import { useState } from 'react'
+
+import { EditOutlined } from '@ant-design/icons'
+import { Card } from 'antd'
+import RemovePerson from "../buttons/RemovePerson";
+import UpdateCar from "../Forms/UpdateCar";
+import RemoveCar from "../buttons/RemoveCar";
 
 const getStyles = () => ({
-    list: {
-        display: 'flex',
-        justifyContent: 'center'
+    card: {
+        width: '500px'
     }
 })
-
-const Cars = ({checkID}) => {
+const Car = props => {
+    const { id, year, make, model, price, personId } = props
     const styles = getStyles()
 
-    const {loading, error, data} = useQuery(GET_CARS)
-    if (loading) return 'Loading...'
-    if (error) return `Error! ${error.message}`
+    const [editMode, setEditMode] = useState(false)
+
+    const handleButtonClick = () => setEditMode(!editMode)
 
     return (
-        <List grid={{gutter: 20, column: 1}} style={styles.list}>
-            {data.cars.map(({id, year, make, model, price, personId}) => {
-                if (checkID === personId) {
-                    return <List.Item key={id}>
-                        <Car id={id} year={year} make={make} model={model} price={price} personId={personId}/>
-                    </List.Item>
-                } else {
-                    return null
-                }
-            })}
-        </List>
+        <>
+            {editMode ? (
+                <UpdateCar
+                    id={id}
+                    year={year}
+                    make={make}
+                    model={model}
+                    price={price}
+                    personId={personId}
+                    onButtonClick={handleButtonClick}
+                />
+            ) : (
+                <Card
+                    style={styles.card}
+                    actions={[
+                        <EditOutlined key='edit' onClick={handleButtonClick} />,
+                        <RemoveCar id={id} />
+                    ]}
+                >
+                    {year} {make} {model} {price} {personId}
+                </Card>
+            )}
+        </>
     )
 }
 
-export default Cars
+export default Car

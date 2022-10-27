@@ -1,6 +1,5 @@
 import{Card}from'antd'
-import{useParams}from'react-router-dom';
-import{Link}from'react-router-dom';
+import{useParams, useNavigate, Link}from'react-router-dom'
 import{useQuery}from"@apollo/client";
 import{GET_PERSON_W_CARS}from"../../queries";
 
@@ -11,6 +10,8 @@ const getStyles=()=>({
 })
 
 const PersonWCars = props =>{
+
+    const navigate = useNavigate();
     const styles=getStyles()
     const{id}=useParams();
     const{loading,error,data }=useQuery(GET_PERSON_W_CARS,{
@@ -31,10 +32,11 @@ const PersonWCars = props =>{
                 style={styles.card}
             >
                 {person?.cars?.map(({id,year,make,model,price })=>{
-                    return<Card  title={`${year}${make}${model}-> ${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',')}`}/>
+                    return <Card  title={`${year} ${make} ${model} --> ${price.toString()}q`}/>
                 })}
 
             </Card>
+            <Link onClick={() => navigate(-1)}>Back</Link>
         </>
     )
 }
