@@ -1,9 +1,9 @@
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core/dist/plugin/drainHttpServer';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import http from 'http';
 
-import {typeDefs, resolvers} from './src/schema'
+import {typeDefs, resolvers} from './src/peopleCarsScheme'
 
 
 
