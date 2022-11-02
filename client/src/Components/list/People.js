@@ -14,6 +14,7 @@ const People = () => {
     const styles = getStyles()
 
     const { loading, error, data } = useQuery(GET_PEOPLE)
+
     if (loading) return 'Loading...'
     if (error) return `Error! ${error.message}`
 

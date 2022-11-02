@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import {useMutation, useQuery} from '@apollo/client'
-import {Button, Form, Input, Select} from 'antd'
 import { v4 as uuidv4 } from 'uuid'
 import {ADD_CAR, GET_CARS, GET_PEOPLE} from '../../queries'
+import {Button, Form, Input, InputNumber, Select} from 'antd'
 const { Option } = Select;
 
 const AddCar = () => {
     const [addCar] = useMutation(ADD_CAR)
-    const [people, setPeople] = useState([])
+    const [people, setPeople] = useState(null)
+    const [id, setId] = useState(uuidv4())
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
     const { data } = useQuery(GET_PEOPLE);
@@ -39,8 +40,8 @@ const AddCar = () => {
                 cache.writeQuery({
                     query: GET_CARS,
                     data: {
-                        ...data,
-                        cars: [...data.cars, addCar]
+                        ...dataNew,
+                        cars: [...dataNew.cars, addCar]
                     }
                 })
             }

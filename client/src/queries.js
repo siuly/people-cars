@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
 export const GET_PEOPLE = gql`
-    query GetPeople{
-    people {
-      id
-      firstName
-      lastName
+    query GetPeople {
+        people {
+            id
+            firstName
+            lastName
+        }
     }
-  }
 `;
 export const GET_CARS = gql`
     query GetCars {
@@ -22,7 +22,7 @@ export const GET_CARS = gql`
     }
 `;
 export const ADD_PERSON = gql`
-    mutation AddPerson($id: String!, $firstName: String!, $lastName: String!){
+    mutation AddPerson($id: String!, $firstName: String!, $lastName: String!) {
         addPerson(id: $id, firstName: $firstName, lastName: $lastName) {
             id
             firstName

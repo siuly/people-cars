@@ -102,10 +102,10 @@ const typeDefs = gql`
   }
   type Cars {
     id: String!
-    year: String
+    year: Int
     make: String
     model: String
-    price: String
+    price: Float
     personId: String
   }
   type PersonWCars{

@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/client'
-import { List } from 'antd'
-import { GET_CARS } from '../../queries'
+import {useQuery} from '@apollo/client'
+import {List} from 'antd'
+import {GET_CARS} from '../../queries'
 import Car from '../listItem/Car'
 
 const getStyles = () => ({
@@ -10,20 +10,24 @@ const getStyles = () => ({
     }
 })
 
-const Cars = () => {
+const Cars = ({checkID}) => {
     const styles = getStyles()
 
-    const { loading, error, data } = useQuery(GET_CARS)
+    const {loading, error, data} = useQuery(GET_CARS)
     if (loading) return 'Loading...'
     if (error) return `Error! ${error.message}`
 
     return (
-        <List grid={{ gutter: 20, column: 1 }} style={styles.list}>
-            {data.cars.map(({ id, year, make, model, price, personId }) => (
-                <List.Item key={id}>
-                    <Car id={id} year={year} make={make} model={model} price={price} personId={personId} />
-                </List.Item>
-            ))}
+        <List grid={{gutter: 20, column: 1}} style={styles.list}>
+            {data.cars.map(({id, year, make, model, price, personId}) => {
+                if (checkID === personId) {
+                    return <List.Item key={id}>
+                        <Car id={id} year={year} make={make} model={model} price={price} personId={personId}/>
+                    </List.Item>
+                } else {
+                    return null
+                }
+            })}
         </List>
     )
 }

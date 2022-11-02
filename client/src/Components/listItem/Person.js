@@ -39,8 +39,9 @@ const Person = props => {
                 >
                     {firstName} {lastName}
 
-                    <Car passedId={id}/>
+                    <Cars checkID={id}/>
 
+                    <Link to={`/person/${id}`}>LEARN MORE</Link>
                 </Card>
             )}
         </>
